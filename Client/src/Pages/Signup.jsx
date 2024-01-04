@@ -19,54 +19,64 @@ export default function Sigup() {
       re_enter_password: Retypepassword
     }
     console.log(payload)
-
-    axios.post('http://localhost:3000/api/signup', payload)
-      .then(json => {
-        console.log(json.data);
-        console.log(json.data.Message);
-
-        if (json.data.Message == 'Password & Re-type Password not match') {
-          Swal.fire({
-            title: 'Password Mismatch',
-            text: 'The entered passwords do not match. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            timer: 3000,
-          });
-        }
-        else if (json.data.Message == 'User already exist') {
-          Swal.fire({
-            title: 'User Already Exists',
-            text: 'The provided email is already associated with an existing user.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            timer: 3000,
-          });
-        }
-        else if (json.data.Message == 'SignUP SucessFully') {
-          Swal.fire({
-            title: 'Registration Successful!',
-            text: 'Your account has been created successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            timer: 3000,
-          })
-        }
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Error',
-          text: 'An error occurred while retrieving user data.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        console.log(error.Message)
+    if (password !== Retypepassword) {
+      Swal.fire({
+        title: 'Password Mismatch',
+        text: 'The entered passwords do not match. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        timer: 3000,
       });
+    }
+    else {
+      axios.post('http://localhost:3000/api/signup', payload)
+        .then(json => {
+          console.log(json.data);
+          console.log(json.data.Message);
 
-    // setemail('')
-    // setpassword('')
-    // setusername('')
-    // setRetypepassword('')
+          if (json.data.Message == 'Password & Re-type Password not match') {
+            Swal.fire({
+              title: 'Password Mismatch',
+              text: 'The entered passwords do not match. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+              timer: 3000,
+            });
+          }
+          else if (json.data.Message == 'User already exist') {
+            Swal.fire({
+              title: 'User Already Exists',
+              text: 'The provided email is already associated with an existing user.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+              timer: 3000,
+            });
+          }
+          else if (json.data.Message == 'SignUP SucessFully') {
+            Swal.fire({
+              title: 'Registration Successful!',
+              text: 'Your account has been created successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              timer: 3000,
+            })
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while retrieving user data.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          console.log(error.Message)
+        });
+    }
+
+    setemail('')
+    setpassword('')
+    setusername('')
+    setRetypepassword('')
 
   }
 
@@ -140,7 +150,7 @@ export default function Sigup() {
             </div>
           </form>
 
-          <Link className='nav-link text-danger text-end' to="/login"><small><span className='text-dark'>Already a member ?</span> Login</small></Link>
+          <Link className='nav-link text-danger text-end' to="/"><small><span className='text-dark'>Already a member ?</span> Login</small></Link>
 
         </div>
       </div>

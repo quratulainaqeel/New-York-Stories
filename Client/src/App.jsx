@@ -1,26 +1,22 @@
-import React from 'react'
-import Sigup from './Pages/Signup'
-import Home from './Pages/Home'
-import Login from './Pages/Login'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import React, { useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Sigup from './Pages/Signup';
+import Home from './Pages/Home';
+import Contactus from './Pages/Contactus';
+import About from './Pages/About';
+import Login from './Pages/Login';
 
 export default function App() {
+
   return (
     <>
-      <Sigup />
-      {/* <Login/>
-    <Home/> */}
-
-      {/* <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/contact" element={<Contactus />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/" element={<Login />} />
         <Route path="/Signup" element={<Sigup />} />
-        <Route path="/logout" element={<Navigate to='/' replace={true} />} />
-        <Route path="*" element={<Navigate to='/login' replace={true} />} />
-      </Routes> */}
+      </Routes>
     </>
-
-
-  )
+  );
 }

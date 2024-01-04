@@ -9,9 +9,6 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    // re_enter_password: {
-    //     type: String,
-    // },
     email: {
         type: String,
         required: true,

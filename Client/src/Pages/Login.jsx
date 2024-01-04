@@ -1,27 +1,65 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
-import { Link, json } from 'react-router-dom'
+import { Link, json, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-// import { GlobalContext } from '../../Context/Context'
+import { GlobalContext } from '../Context/COntext'
 import Cookies from 'js-cookie'
-
 
 export default function Login() {
 
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
+    const navigate = useNavigate();
 
-    // const { state, dispatch } = useContext(GlobalContext)
+    const { state, dispatch } = useContext(GlobalContext)
 
     const handleFormSubmission = (e) => {
         e.preventDefault();
 
         const payload = {
-          email: email,
-          password: password
-      }
-      console.log(payload)
-      axios.post('http://localhost:3000/api/login', payload).then((json)=> console.log(json.data))
+            email: email,
+            password: password
+        }
+        console.log(payload)
+        axios.post('http://localhost:3000/api/login', payload).then((json) => {
+            console.log(json.data);
+            console.log(json.data.Message);
+
+            if (json.data.Message == 'User Does not Exist') {
+                Swal.fire({
+                    title: 'User doesnot Exists',
+                    text: 'The provided email does not exist.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    timer: 3000,
+                });
+            }
+            else if (json.data.Message == 'Invalid Credentials') {
+                Swal.fire({
+                    title: 'Invalid Credentials',
+                    text: 'Please enter valid Credentials to proceed .',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    timer: 3000
+                })
+            }
+            else if (json.data.Message === 'Sucessfully Login') {
+                Cookies.set('token', json.data.token)
+                dispatch({
+                    type: "LOGIN",
+                    token: json.data.token
+                })
+                navigate('/home');
+                Swal.fire({
+                    title: 'Logged In!',
+                    text: 'You have successfully logged into your account.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    timer: 3000
+                })
+            }
+
+        }).catch((err) => console.log(err))
 
         // axios.get('/api/get-all-user')
         //     .then((json) => {
@@ -118,7 +156,7 @@ export default function Login() {
 
                     </form>
 
-                    <Link className='nav-link text-danger text-end ' to="/signup"><small><span className='text-dark'>Not Registered yet? </span>Signup</small></Link>
+                    <Link className='nav-link text-danger text-end ' to="/Signup"><small><span className='text-dark'>Not Registered yet? </span>Signup</small></Link>
 
                 </div>
             </div>

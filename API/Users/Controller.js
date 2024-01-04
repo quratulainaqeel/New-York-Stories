@@ -57,7 +57,7 @@ const Login = async (req, res) => {
 
     if (!password || !email) {
         res.status(403).json({
-            message: "Missing Required Field"
+            Message: "Missing Required Field"
         })
     }
 
@@ -110,7 +110,7 @@ const Login = async (req, res) => {
         catch (error) {
             res.status(404).json(
                 {
-                    message: error.message
+                    Message: error.Message
                 }
             )
         }
@@ -120,75 +120,4 @@ const Login = async (req, res) => {
 
 }
 
-const getAllUser = async (req, res) => {
-
-    try {
-        await connect(process.env.MONGO_URI)
-        console.log(" getAllUser DB connected")
-        const alluser = await User.find()
-        res.json(
-            {
-                User: alluser
-            }
-        )
-    }
-
-    catch (error) {
-        res.status(404).json(
-            {
-                message: error.message
-            }
-        )
-    }
-}
-
-const getUserById = async (req, res) => {
-
-    const { _id } = req.query
-
-    try {
-        await connect(process.env.MONGO_URI)
-        console.log("getUserById DB connected")
-
-        const userbyid = await User.findOne({ _id })
-
-        res.json(
-            {
-                User: userbyid
-            }
-        )
-
-    } catch (error) {
-        res.status(404).json(
-            {
-                message: error.message
-            }
-        )
-    }
-}
-
-const getuserbyEmail = async (req, res) => {
-    const { email } = req.query
-
-    try {
-        await connect(process.env.MONGO_URI)
-        console.log("getuserbyEmail DB connected")
-
-        const userbyemail = await User.findOne({ email })
-
-        res.json(
-            {
-                User: userbyemail
-            }
-        )
-
-    } catch (error) {
-        res.status(404).json(
-            {
-                message: error.message
-            }
-        )
-    }
-}
-
-module.exports = { Login, Signup, getAllUser, getUserById, getuserbyEmail}
+module.exports = { Login, Signup}

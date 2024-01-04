@@ -9,12 +9,12 @@ const Signup = async (req, res) => {
 
     if (!username || !password || !email || !re_enter_password) {
         res.status(403).json({
-            message: "Missing Required Field"
+            Message: "Missing Required Field"
         })
     }
     else if (password !== re_enter_password) {
-        res.status(403).json({
-            message: "Passwords do not match"
+        res.json({
+            Message: "Password & Re-type Password not match "
         })
     }
     else {

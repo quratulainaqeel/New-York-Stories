@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 export default function Sigup() {
@@ -19,69 +19,49 @@ export default function Sigup() {
       re_enter_password: Retypepassword
     }
     console.log(payload)
-    
+
     axios.post('http://localhost:3000/api/signup', payload)
       .then(json => {
         console.log(json.data);
-        Swal.fire({
-          title: 'Registration Successful!',
-          text: 'Your account has been created successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          timer: 3000,
-        })
+        console.log(json.data.Message);
+
+        if (json.data.Message == 'Password & Re-type Password not match') {
+          Swal.fire({
+            title: 'Password Mismatch',
+            text: 'The entered passwords do not match. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            timer: 3000,
+          });
+        }
+        else if (json.data.Message == 'User already exist') {
+          Swal.fire({
+            title: 'User Already Exists',
+            text: 'The provided email is already associated with an existing user.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            timer: 3000,
+          });
+        }
+        else if (json.data.Message == 'SignUP SucessFully') {
+          Swal.fire({
+            title: 'Registration Successful!',
+            text: 'Your account has been created successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            timer: 3000,
+          })
+        }
       })
       .catch(error => {
-        console.error(error);
+        Swal.fire({
+          title: 'Error',
+          text: 'An error occurred while retrieving user data.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        console.log(error.Message)
       });
-   
-    //   axios.get('http://localhost:3000/api/get-all-user')
-    //   .then((response) => {
-    //     const users = response.data.User;
-
-    //     const userExists = users.some(user => user.email === email);
-
-    //     if (userExists) {
-    //       Swal.fire({
-    //         title: 'User Already Exists',
-    //         text: 'The provided email is already associated with an existing user.',
-    //         icon: 'error',
-    //         confirmButtonText: 'OK',
-    //         timer: 3000,
-    //       });
-    //     }
-    //     else {
-    //       const payload = {
-    //         username: username,
-    //         email: email,
-    //         password: password
-    //       };
-
-    //       axios.post('http://localhost:3000/api/signup', payload)
-    //         .then(json => {
-    //           console.log(json.data);
-    //         })
-    //         .catch(error => {
-    //           console.error(error);
-    //         });
-    //       Swal.fire({
-    //         title: 'Registration Successful!',
-    //         text: 'Your account has been created successfully.',
-    //         icon: 'success',
-    //         confirmButtonText: 'OK',
-    //         timer: 3000,
-    //       })
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //     Swal.fire({
-    //       title: 'Error',
-    //       text: 'An error occurred while retrieving user data.',
-    //       icon: 'error',
-    //       confirmButtonText: 'OK'
-    //     });
-    //   });
 
     // setemail('')
     // setpassword('')
@@ -94,7 +74,7 @@ export default function Sigup() {
     <>
       <div className=" d-flex justify-content-center align-items-center " style={{ width: '100vw', height: '100vh' }}>
         <div className='bg-light p-5 rounded'>
-          <h3 className='text-center mb-4'>Create your Account</h3>
+          <h3 className='text-center mb-4'>Sign UP</h3>
           <form onSubmit={Handlevent}>
             <div className=" mb-3">
 
@@ -160,7 +140,7 @@ export default function Sigup() {
             </div>
           </form>
 
-          {/* <Link className='nav-link text-danger text-end' to="/login"><small><span className='text-dark'>Already a member ?</span> Login</small></Link> */}
+          <Link className='nav-link text-danger text-end' to="/login"><small><span className='text-dark'>Already a member ?</span> Login</small></Link>
 
         </div>
       </div>
